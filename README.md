@@ -92,3 +92,4 @@ Once you have `Music.ipa` (either from `xtool` or GitHub Actions):
 - **Search**: Centered search header with mic and red Cancel button, scope bar `[ Apple Music | Library ]`, 2-column Category Cards, and live suggestions with `🔍` prefix.
 - **Zero-Key Streaming**: Piped / YouTube audio extraction with Apple CDN preview fallback.
 - **Background Playback & Lock Screen**: `AVAudioSession` `.playback` + `MPNowPlayingInfoCenter` + `MPRemoteCommandCenter`.
+"# Behaviour_Music" 
