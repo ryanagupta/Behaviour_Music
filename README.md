@@ -1,95 +1,94 @@
 # Apple Music iOS Replica (1-to-1 Native SwiftUI App)
 
-A pixel-perfect, 1-to-1 native iOS replica of Apple Music built in Swift & SwiftUI for iOS 17.0+, complete with on-device music streaming, time-synced karaoke lyrics, offline downloads, dynamic blurred mesh backgrounds, lock screen controls, and an automated GitHub Actions CI pipeline that packages unsigned `.ipa` builds ready for sideloading.
+A pixel-perfect, 1-to-1 native iOS replica of Apple Music built in Swift & SwiftUI for iOS 17.0+ & iOS 18, complete with on-device music streaming, time-synced karaoke lyrics, offline downloads, dynamic blurred mesh backgrounds, lock screen controls, and two separate build pipelines:
+1. **Local Build on Windows via `xtool` + WSL (No Mac required)**
+2. **Automated Cloud Build via GitHub Actions (Zero local setup)**
 
 ---
 
-## ✨ Features & Visual Parity (Replicated 1-to-1)
+## 🏗️ How to Get / Build the `.ipa`
 
-1. **iOS 18 Floating Island Tab Bar & Mini-Player (Image 1 & 2 Parity)**:
-   - Floating navigation island capsule: `[ Home | New | Radio | Library ]` with `.ultraThinMaterial` frosted glass.
-   - Detached circular floating Search button with authentic red magnifying glass.
-   - Docked floating Mini-Player showing live album art thumbnail, title, artist, play/pause and skip buttons.
-   - Seamless interactive tap gesture expanding to the full-screen Now Playing sheet.
-
-2. **Full-Bleed Album Detail View (Image 1 & 2 Parity)**:
-   - Full-bleed hero artwork fading smoothly into dynamic ambient background tints (e.g. *The Weeknd - Hurry Up Tomorrow* in warm cream, *SZA - SOS* in deep ocean blue).
-   - Frosted navigation buttons: Circular `<` back button, Share/Ellipsis capsule.
-   - Metadata badges: `R&B/Soul • 2025 • [Dolby Atmos] • [Hi-Res Lossless]`.
-   - Control buttons trio: Circular frosted **Shuffle**, prominent wide **▶ Play** capsule, circular frosted **+** add button.
-   - Editorial description with interactive **MORE** / **LESS** expansion.
-   - Numbered tracklist with animated equalizer bars `waveform` on active playing song, explicit `[E]` badges, and duration.
-
-3. **Now Playing Modal (Image 3 Parity)**:
-   - Dynamic fluid blurred mesh gradient backdrop reacting in real-time to album artwork.
-   - Floating artwork with spring animations on play/pause state transitions.
-   - Personal Audio user tag capsule: `[avatar] Personal Audio`.
-   - Song title & artist row flanked by frosted circular **Star** favorite button and **Ellipsis** menu.
-   - Precise interactive scrub bar with elapsed and remaining countdown timers (`-1:00`).
-   - Transport controls: Backward, giant Play/Pause, Forward.
-   - Smooth system volume slider with minimum/maximum speaker glyphs.
-   - Bottom action bar: **Time-Synced Lyrics** bubble, **AirPlay & SharePlay** capsule, and **Up Next Queue** button.
-
-4. **Search Experience (Image 4 & 5 Parity)**:
-   - Custom search header with microphone icon and red animated **Cancel** button.
-   - Segmented scope bar: `[ Apple Music | Library ]`.
-   - Rich 2-column **Browse Categories** grid with vibrantly tinted cards (HEAD TRIP, Hits, Pop, Hip-Hop, Dance, Alternative, R&B/Soul, Country, Rock, Chill).
-   - Real-time instant auto-complete suggestions prefixed by `🔍`.
-   - Live song and album query results with instant tap-to-play.
-
-5. **Audio Engine & On-Device Streaming**:
-   - Zero-key streaming via multi-tier fallback architecture:
-     1. Piped API audio stream extraction (`audio/mp4` / AAC 128-256kbps).
-     2. Invidious / InnerTube audio stream fallback.
-     3. Official iTunes Store 256kbps preview stream instant fallback.
-   - Background audio playback (`AVAudioSession` `.playback` category).
-   - Full iOS Lock Screen & Control Center integration via `MPNowPlayingInfoCenter` (artwork, progress, metadata) and `MPRemoteCommandCenter` (play, pause, next, previous, scrub).
-   - Dynamic time-synced karaoke lyrics powered by LRCLIB public API.
-   - Local library storage and offline audio downloading to `Documents/Downloads/`.
+You have **two complete ways** to get your compiled `Music.ipa`:
 
 ---
 
-## 🚀 Sideloading onto iPhone (.IPA Installation)
+### Option A: Local Build on Windows using `xtool` & WSL (No Mac Needed)
 
-You don't need a paid Apple Developer Account or a Mac to install this app on your iPhone. Free personal Apple IDs can sign and sideload up to 3 apps.
+`xtool` compiles Swift Package Manager projects for iOS using the official Apple SDK on Linux/WSL.
 
-### Option 1: AltStore (Recommended for Windows & Mac)
-1. Download [AltServer](https://altstore.io/) on Windows or Mac.
-2. Install the Mail plug-in (Mac) or iTunes/iCloud desktop apps from Apple (not Microsoft Store on Windows).
-3. Connect your iPhone to your computer via USB and select **Install AltStore**.
-4. On your iPhone, download the `Music.ipa` artifact from GitHub Actions.
-5. In AltStore on your phone, go to **My Apps**, tap **+**, and select `Music.ipa`.
-6. Enter your Apple ID to sign and install.
+#### Step 1: Install WSL (Ubuntu 24.04)
+1. Open PowerShell as Administrator (Right click Start Menu -> **Terminal (Admin)** or **PowerShell (Admin)**).
+2. Run:
+   ```powershell
+   wsl --install -d Ubuntu-24.04
+   ```
+3. Restart your computer when prompted.
+4. Launch **Ubuntu 24.04** from your Windows Start Menu and set your Linux username and password.
 
-### Option 2: SideStore (On-Device Sideloading without Computer)
-1. Install [SideStore](https://sidestore.io/) onto your iPhone once using SideServer.
-2. Download `Music.ipa` in Safari.
-3. Open SideStore -> tap **+** -> select `Music.ipa`.
-4. The app refreshes wirelessly over Wi-Fi without needing a computer!
+#### Step 2: Download Xcode 16 from Apple
+1. Log into [Apple Developer Downloads](https://developer.apple.com/download/all/).
+2. Search for **Xcode 16** (e.g. `Xcode_16.2.xip` or `Xcode_16.0.xip`) — *this contains the iOS 18 SDK*.
+3. Save it in your Windows Downloads folder (`C:\Users\ry4ngupta\Downloads`).
 
-### Option 3: TrollStore (iOS 14.0 - 16.6.1 / 17.0)
-If your device is running a TrollStore-supported iOS version:
-1. Open TrollStore.
-2. Share `Music.ipa` directly to TrollStore or tap **+** -> **Install IPA File**.
-3. Permanently installed with no 7-day expiration and no app limits!
+#### Step 3: Run the Automated `xtool` Installer
+In your Ubuntu terminal, run:
+```bash
+cd /mnt/c/Users/ry4ngupta/Documents/antigravity/blissful-pasteur
+chmod +x ./install-xtool.sh
+./install-xtool.sh
+```
 
-### Option 4: Sideloadly (Windows / Mac)
-1. Download [Sideloadly](https://sideloadly.io/).
-2. Plug your iPhone into your PC.
-3. Drag and drop `Music.ipa` into Sideloadly.
-4. Enter your Apple ID and click **Start**.
+#### Step 4: Extract the iOS SDK & Configure Signing
+In Ubuntu, run:
+```bash
+xtool setup
+```
+When prompted for the path to the Xcode archive, provide:
+```bash
+/mnt/c/Users/ry4ngupta/Downloads/Xcode_16.2.xip
+```
+Follow the on-screen prompt to authenticate with your Apple ID for code signing.
+
+#### Step 5: Compile `AppleMusic.ipa`
+```bash
+cd /mnt/c/Users/ry4ngupta/Documents/antigravity/blissful-pasteur
+xtool build --release
+```
+`xtool` compiles the Swift Package (`Package.swift`), links the framework dependencies, and generates your sideloadable `.ipa` right on your computer!
 
 ---
 
-## 🛠️ Automated CI / GitHub Actions Pipeline
+### Option B: Cloud Build via GitHub Actions (Fastest, No 12GB Download)
 
-Whenever you push commits or tags to GitHub, the included `.github/workflows/build-ipa.yml` workflow automatically runs:
+If you don't want to install WSL or download a 12GB Xcode file, GitHub Actions will compile it on Apple Silicon in ~2 minutes for free:
 
-1. Spins up a `macos-14` Apple Silicon runner.
-2. Builds `AppleMusic.xcodeproj` with `xcodebuild archive`.
-3. Packages the application bundle into `Music.ipa`.
-4. Uploads `Music.ipa` directly to GitHub Actions Artifacts ready for one-click download.
+1. Push this repository to GitHub:
+   ```powershell
+   git remote add origin https://github.com/<YOUR-USERNAME>/<YOUR-REPO>.git
+   git push -u origin main
+   ```
+2. Go to your repo on GitHub -> click **Actions** -> **Build Sideloadable IPA**.
+3. Download the **Music-IPA** zip artifact at the bottom of the completed run.
+4. Inside is your compiled **`Music.ipa`**.
 
-To trigger manually:
-- Go to your repository on GitHub.
-- Click **Actions** -> **Build Sideloadable IPA** -> **Run workflow**.
+---
+
+## 📲 Sideloading onto your iPhone
+
+Once you have `Music.ipa` (either from `xtool` or GitHub Actions):
+
+- **AltStore / SideStore**: Open AltStore/SideStore on your iPhone, tap **+**, select `Music.ipa`, and enter your free personal Apple ID.
+- **Sideloadly (Windows)**: Connect your iPhone via USB, drag `Music.ipa` into Sideloadly, and click **Start**.
+- **TrollStore** *(iOS 14 - 16.6.1 / 17.0)*: Open `Music.ipa` directly in TrollStore for permanent signing without refresh limits.
+
+---
+
+## ✨ 1-to-1 UI Parity Features
+
+- **iOS 18 Floating Island Tab Bar**: Floating `.ultraThinMaterial` pill `[ Home | New | Radio | Library ]` with detached circular search button.
+- **Docked Mini-Player**: Floats above island tab bar; displays active artwork thumbnail, title, artist, and play/skip buttons (or "Not Playing" idle state).
+- **Now Playing Sheet**: Dynamic animated mesh gradient background, user listening pill, Star favorite button, Ellipsis menu, scrubber with countdown remaining, transport controls, volume slider, Lyrics bubble, and AirPlay/SharePlay capsule.
+- **Album Detail**: Hero full-bleed artwork with ambient color transition (warm cream for *The Weeknd*, deep ocean blue for *SZA*), Dolby Atmos / Hi-Res Lossless badges, Shuffle / ▶ Play / + trio, and tracklist with live equalizer bars.
+- **Search**: Centered search header with mic and red Cancel button, scope bar `[ Apple Music | Library ]`, 2-column Category Cards, and live suggestions with `🔍` prefix.
+- **Zero-Key Streaming**: Piped / YouTube audio extraction with Apple CDN preview fallback.
+- **Background Playback & Lock Screen**: `AVAudioSession` `.playback` + `MPNowPlayingInfoCenter` + `MPRemoteCommandCenter`.
